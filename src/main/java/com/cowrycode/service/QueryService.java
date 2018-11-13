@@ -34,6 +34,9 @@ public class QueryService {
     @Inject
     EntityManager entityManager;
     
+    @Inject
+    private SecurityUtil securityUtil;
+    
     @PostConstruct
     private void init(){
         
@@ -172,11 +175,10 @@ public class QueryService {
         return entityManager.createNativeQuery("select * from Department", Department.class).getResultList();
     }
     
-//    public ApplicationUser findUserByCredentials(String email, String plainTextPassword) {
-//
-//        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
-//                .setParameter("encryptedPassword", securityUtil.encryptText(plainTextPassword))
-//                .setParameter("email", email).getResultList().get(0);
-//    }
+    public boolean authenticateUser(String email, String plainTextPassword) {
+
+        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
+                .setParameter("email", email).getResultList().get(0);
+    }
 
 }
