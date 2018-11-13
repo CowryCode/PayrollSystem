@@ -177,8 +177,12 @@ public class QueryService {
     
     public boolean authenticateUser(String email, String plainTextPassword) {
 
-        return entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
+        ApplicationUser user = entityManager.createNamedQuery(ApplicationUser.FIND_USER_BY_CREDENTIALS, ApplicationUser.class)
                 .setParameter("email", email).getResultList().get(0);
+       if(user != null){
+           return securityUtil.passwordsmatch(user.getPassword(), user.getSalt(), plainTextPassword);
+       }
+       return false;
     }
 
 }
